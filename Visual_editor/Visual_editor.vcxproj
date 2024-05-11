@@ -123,6 +123,11 @@
     <ClCompile Include="VE_Form.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCircle.h" />
+    <ClInclude Include="CFigure.h" />
+    <ClInclude Include="Container.h" />
+    <ClInclude Include="CSquare.h" />
+    <ClInclude Include="CTriangle.h" />
     <ClInclude Include="VE_Form.h">
       <FileType>CppForm</FileType>
     </ClInclude>
