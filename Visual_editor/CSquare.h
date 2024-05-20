@@ -21,4 +21,7 @@ public:
 		int yl = y - side / 2;
 		return (xl <= mouse_X && yl <= mouse_Y && side + xl >= mouse_X && side + yl >= mouse_Y);
 	}
+	void changeSize(int value) override {
+		if (side + value > 2) side += value;
+	}
 };

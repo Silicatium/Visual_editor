@@ -29,4 +29,5 @@ public:
 	void changeColor(Color color) {
 		this->color = color;
 	}
+	virtual void changeSize(int value) = 0;
 };

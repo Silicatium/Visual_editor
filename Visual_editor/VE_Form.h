@@ -538,6 +538,16 @@ namespace Visualeditor {
 				figure->move(0, 5);
 			}
 		}
+		if (e->KeyCode == Keys::Oemplus) {
+			for each (CFigure ^ figure in selectedFigures) {
+				figure->changeSize(2);
+			}
+		}
+		if (e->KeyCode == Keys::OemMinus) {
+			for each (CFigure ^ figure in selectedFigures) {
+				figure->changeSize(-2);
+			}
+		}
 	}
 	private: System::Void VE_Form_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		if (ctrlPressed && e->KeyCode == Keys::ControlKey) ctrlPressed = false;

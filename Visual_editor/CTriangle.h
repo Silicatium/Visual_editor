@@ -16,6 +16,11 @@ public:
 	CTriangle(int x, int y, Color color) : CFigure(x, y, color) {}
 	CTriangle(const CTriangle% c) : CFigure(c), external_radius(c.external_radius) {}
 	~CTriangle() {}
+	void update_points() {
+		p0 = Point(x, y - external_radius);
+		p1 = Point(x + sqrt(3) * external_radius / 2, y + external_radius / 2);
+		p2 = Point(x - sqrt(3) * external_radius / 2, y + external_radius / 2);
+	}
 	void draw(Graphics^ g) override {
 		update_points();
 		if (!selected) g->DrawPolygon(gcnew Pen(color, 3.f), gcnew array<Point>{ p0, p1, p2 });
@@ -38,9 +43,7 @@ public:
 
 		return ((A0 * mouse_X + B0 * mouse_Y + C0 <= 0) && (A1 * mouse_X + B1 * mouse_Y + C1 <= 0) && (A2 * mouse_X + B2 * mouse_Y + C2 <= 0));
 	}
-	void update_points() {
-		p0 = Point(x, y - external_radius);
-		p1 = Point(x + sqrt(3) * external_radius / 2, y + external_radius / 2);
-		p2 = Point(x - sqrt(3) * external_radius / 2, y + external_radius / 2);
+	void changeSize(int value) override {
+		if (external_radius + value > 2) external_radius += value;
 	}
 };

@@ -19,4 +19,7 @@ public:
 	bool check_entry(int mouse_X, int mouse_Y) override {
 		return ((x - mouse_X) * (x - mouse_X) + (y - mouse_Y) * (y - mouse_Y)) <= radius * radius;
 	}
+	void changeSize(int value) override {
+		if (radius + value > 2) radius += value;
+	}
 };
