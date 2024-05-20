@@ -39,4 +39,15 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Circle.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Square.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Triangle.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

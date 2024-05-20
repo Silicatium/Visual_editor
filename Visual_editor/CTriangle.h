@@ -5,17 +5,17 @@
 using namespace System::Windows::Forms;
 using namespace System::Drawing;
 
-ref class CCircle : public CFigure {
+ref class CTriangle : public CFigure {
 private:
 	int external_radius = 50;
 	Point p0;
 	Point p1;
 	Point p2;
 public:
-	CCircle() : CFigure() {}
-	CCircle(int x, int y) : CFigure(x, y) {}
-	CCircle(const CCircle% c) : CFigure(c), external_radius(c.external_radius) {}
-	~CCircle() {
+	CTriangle() : CFigure() {}
+	CTriangle(int x, int y) : CFigure(x, y) {}
+	CTriangle(const CTriangle% c) : CFigure(c), external_radius(c.external_radius) {}
+	~CTriangle() {
 		external_radius = 0;
 	}
 	void draw(Graphics^ g) override {
@@ -23,7 +23,7 @@ public:
 		if (selected) color = Color::Blue;
 		else color = Color::Black;
 		Pen^ pen = gcnew Pen(color, 3.f);
-		g->DrawPolygon(pen,  gcnew array<Point>{ p0, p1, p2 });
+		g->DrawPolygon(pen, gcnew array<Point>{ p0, p1, p2 });
 	}
 	bool check_entry(int mouse_X, int mouse_Y) override {
 		// p0 and p1
@@ -39,7 +39,7 @@ public:
 		int B2 = p2.X - p0.X;
 		int C2 = p2.Y * (p0.X - p2.X) - p2.X * (p0.Y - p2.Y);
 
-		return ((A0 * mouse_X + B0 * mouse_Y + C0 < 0) && (A1 * mouse_X + B1 * mouse_Y + C1 < 0) && (A2 * mouse_X + B2 * mouse_Y + C2 < 0));
+		return ((A0 * mouse_X + B0 * mouse_Y + C0 <= 0) && (A1 * mouse_X + B1 * mouse_Y + C1 <= 0) && (A2 * mouse_X + B2 * mouse_Y + C2 <= 0));
 	}
 	void update_points() {
 		p0 = Point(x, y - external_radius);

@@ -4,14 +4,14 @@
 using namespace System::Windows::Forms;
 using namespace System::Drawing;
 
-ref class CCircle : public CFigure {
+ref class CSquare : public CFigure {
 private:
-	int side = 90;
+	int side = 80;
 public:
-	CCircle() : CFigure() {}
-	CCircle(int x, int y) : CFigure(x, y) {}
-	CCircle(const CCircle% c) : CFigure(c), side(c.side) {}
-	~CCircle() {
+	CSquare() : CFigure() {}
+	CSquare(int x, int y) : CFigure(x, y) {}
+	CSquare(const CSquare% c) : CFigure(c), side(c.side) {}
+	~CSquare() {
 		side = 0;
 	}
 	void draw(Graphics^ g) override {
