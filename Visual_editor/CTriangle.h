@@ -13,17 +13,14 @@ private:
 	Point p2;
 public:
 	CTriangle() : CFigure() {}
-	CTriangle(int x, int y) : CFigure(x, y) {}
+	CTriangle(int x, int y, Color color) : CFigure(x, y, color) {}
 	CTriangle(const CTriangle% c) : CFigure(c), external_radius(c.external_radius) {}
-	~CTriangle() {
-		external_radius = 0;
-	}
+	~CTriangle() {}
 	void draw(Graphics^ g) override {
 		update_points();
-		if (selected) color = Color::Blue;
-		else color = Color::Black;
-		Pen^ pen = gcnew Pen(color, 3.f);
-		g->DrawPolygon(pen, gcnew array<Point>{ p0, p1, p2 });
+		if (!selected) g->DrawPolygon(gcnew Pen(color, 3.f), gcnew array<Point>{ p0, p1, p2 });
+		else g->DrawPolygon(gcnew Pen(Color::Blue, 3.f), gcnew array<Point>{ p0, p1, p2 });
+		
 	}
 	bool check_entry(int mouse_X, int mouse_Y) override {
 		// p0 and p1

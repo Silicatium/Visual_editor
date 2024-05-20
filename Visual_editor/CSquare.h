@@ -9,16 +9,12 @@ private:
 	int side = 80;
 public:
 	CSquare() : CFigure() {}
-	CSquare(int x, int y) : CFigure(x, y) {}
+	CSquare(int x, int y, Color color) : CFigure(x, y, color) {}
 	CSquare(const CSquare% c) : CFigure(c), side(c.side) {}
-	~CSquare() {
-		side = 0;
-	}
+	~CSquare() {}
 	void draw(Graphics^ g) override {
-		if (selected) color = Color::Blue;
-		else color = Color::Black;
-		Pen^ pen = gcnew Pen(color, 3.f);
-		g->DrawRectangle(pen, x - side / 2, y - side / 2, side, side);
+		if (!selected) g->DrawRectangle(gcnew Pen(color, 3.f), x - side / 2, y - side / 2, side, side);
+		else g->DrawRectangle(gcnew Pen(Color::Blue, 3.f), x - side / 2, y - side / 2, side, side);
 	}
 	bool check_entry(int mouse_X, int mouse_Y) override {
 		int xl = x - side / 2;
