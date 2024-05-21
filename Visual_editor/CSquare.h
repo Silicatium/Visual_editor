@@ -22,6 +22,10 @@ public:
 		return (xl <= mouse_X && yl <= mouse_Y && side + xl >= mouse_X && side + yl >= mouse_Y);
 	}
 	void changeSize(int value) override {
-		if (side + value > 2) side += value;
+		if (side + value > 3) side += value;
+	}
+	bool checkBorder(int deltaX, int deltaY, int width, int height) override {
+		return (x + deltaX + (side / 2) <= width - 3 && x + deltaX - (side / 2) >= 3 &&
+			y + deltaY + (side / 2) <= height - 3 && y + deltaY - (side / 2) >= 3);
 	}
 };

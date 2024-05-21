@@ -158,6 +158,7 @@ namespace Visualeditor {
 			this->paintBox->TabStop = false;
 			this->paintBox->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &VE_Form::paintBox_Paint);
 			this->paintBox->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &VE_Form::paintBox_MouseClick);
+			this->paintBox->Resize += gcnew System::EventHandler(this, &VE_Form::paintBox_Resize);
 			// 
 			// checkBoxCtrl
 			// 
@@ -401,12 +402,13 @@ namespace Visualeditor {
 			// 
 			// buttonFill
 			// 
+			this->buttonFill->BackColor = System::Drawing::Color::PapayaWhip;
 			this->buttonFill->Location = System::Drawing::Point(580, 33);
 			this->buttonFill->Name = L"buttonFill";
 			this->buttonFill->Size = System::Drawing::Size(67, 23);
 			this->buttonFill->TabIndex = 6;
 			this->buttonFill->Text = L"Fill";
-			this->buttonFill->UseVisualStyleBackColor = true;
+			this->buttonFill->UseVisualStyleBackColor = false;
 			this->buttonFill->Click += gcnew System::EventHandler(this, &VE_Form::buttonFill_Click);
 			// 
 			// VE_Form
@@ -499,9 +501,11 @@ namespace Visualeditor {
 			for each (CFigure ^ figure in figures) {
 				if (figure->check_selected()) figure->clicked();
 			}
-			if (figureShape == "CCircle") figures->Add(gcnew CCircle(e->X, e->Y, mainColor));
-			else if (figureShape == "CSquare") figures->Add(gcnew CSquare(e->X, e->Y, mainColor));
-			else if (figureShape == "CTriangle") figures->Add(gcnew CTriangle(e->X, e->Y, mainColor));
+			CFigure^ figure;
+			if (figureShape == "CCircle") figure = gcnew CCircle(e->X, e->Y, mainColor);
+			else if (figureShape == "CSquare") figure = gcnew CSquare(e->X, e->Y, mainColor);
+			else if (figureShape == "CTriangle") figure = gcnew CTriangle(e->X, e->Y, mainColor);
+			if (figure->checkBorder(0, 0, paintBox->Width, paintBox->Height)) figures->Add(figure);
 			paintBox->Invalidate();
 		}
 	}
@@ -520,27 +524,27 @@ namespace Visualeditor {
 		}
 		if (e->KeyCode == Keys::A) {
 			for each (CFigure ^ figure in selectedFigures) {
-				figure->move(-5, 0);
+				if (figure->checkBorder(-5, 0, paintBox->Width, paintBox->Height)) figure->move(-5, 0);
 			}
 		}
 		if (e->KeyCode == Keys::D) {
 			for each (CFigure ^ figure in selectedFigures) {
-				figure->move(5, 0);
+				if (figure->checkBorder(5, 0, paintBox->Width, paintBox->Height)) figure->move(5, 0);
 			}
 		}
 		if (e->KeyCode == Keys::W) {
 			for each (CFigure ^ figure in selectedFigures) {
-				figure->move(0, -5);
+				if (figure->checkBorder(0, -5, paintBox->Width, paintBox->Height)) figure->move(0, -5);
 			}
 		}
 		if (e->KeyCode == Keys::S) {
 			for each (CFigure ^ figure in selectedFigures) {
-				figure->move(0, 5);
+				if (figure->checkBorder(0, 5, paintBox->Width, paintBox->Height)) figure->move(0, 5);
 			}
 		}
 		if (e->KeyCode == Keys::Oemplus) {
 			for each (CFigure ^ figure in selectedFigures) {
-				figure->changeSize(2);
+				if (figure->checkBorder(2, 2, paintBox->Width, paintBox->Height)) figure->changeSize(2);
 			}
 		}
 		if (e->KeyCode == Keys::OemMinus) {
@@ -595,5 +599,14 @@ namespace Visualeditor {
 			if (figure->check_selected()) figure->changeColor(mainColor);
 		}
 	}
-	};
+	private: System::Void paintBox_Resize(System::Object^ sender, System::EventArgs^ e) {
+		List<CFigure^>^ remove_list = gcnew List<CFigure^>;
+		for each (CFigure ^ figure in figures) {
+			if (!figure->checkBorder(0, 0, paintBox->Width, paintBox->Height)) remove_list->Add(figure);
+		}
+		for each (CFigure ^ figure in remove_list) {
+			figures->Remove(figure);
+		}
+	}
+};
 }

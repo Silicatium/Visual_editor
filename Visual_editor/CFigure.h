@@ -30,4 +30,5 @@ public:
 		this->color = color;
 	}
 	virtual void changeSize(int value) = 0;
+	virtual bool checkBorder(int deltaX, int deltaY, int width, int height) = 0;
 };
