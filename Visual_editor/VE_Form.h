@@ -1,5 +1,5 @@
 #pragma once
-//#include "Container.h"
+#include "Container.h"
 #include "CFigure.h"
 #include "CCircle.h"
 #include "CSquare.h"
@@ -454,8 +454,7 @@ namespace Visualeditor {
 
 		}
 #pragma endregion
-
-		List<CFigure^>^ figures = gcnew List<CFigure^>;
+		CContainer<CFigure^>^ figures = gcnew CContainer<CFigure^>;
 		bool ctrlPressed = false;
 		String^ figureShape = "CCircle";
 		Color mainColor = Color::Black;
@@ -463,28 +462,29 @@ namespace Visualeditor {
 	private: System::Void paintBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 		Bitmap^ b = gcnew Bitmap(paintBox->Width, paintBox->Height);
 		Graphics^ g = Graphics::FromImage(b);
-		for each (CFigure ^ figure in figures) {
-			figure->draw(g);
+		for (int i = 0; i < figures->get_size(); i++) {
+			figures->get_object(i)->draw(g);
 			paintBox->Image = b;
 		}
-		if (figures->Count == 0 && paintBox->Image != nullptr) paintBox->Image = b;
+		if (figures->get_size() == 0 && paintBox->Image != nullptr) paintBox->Image = b;
 		one_selected();
 	}
 	private: System::Void paintBox_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		int countList = figures->Count;
 		bool check_act = false;
 		CFigure^ object;
-		for each (CFigure ^ figure in figures) {
+		for (int i = 0; i < figures->get_size(); i++) {
+			CFigure^ figure = figures->get_object(i);
 			if (figure->check_entry(e->X, e->Y)) {
 				check_act = true;
 				object = figure;
 			}
 		}
 		if (check_act) {
-			figures->Remove(object);
-			figures->Add(object);
+			figures->remove(object);
+			figures->push_back(object);
 			object->clicked();
-			for each (CFigure ^ figure in figures) {
+			for (int i = 0; i < figures->get_size(); i++) {
+				CFigure^ figure = figures->get_object(i);
 				if (!ctrlPressed && figure->check_selected()) figure->clicked();
 				if (figure->check_entry(e->X, e->Y)) {
 					if (checkBoxIntersaction->Checked) {
@@ -498,14 +498,15 @@ namespace Visualeditor {
 			}
 		}
 		else {
-			for each (CFigure ^ figure in figures) {
+			for (int i = 0; i < figures->get_size(); i++) {
+				CFigure^ figure = figures->get_object(i);
 				if (figure->check_selected()) figure->clicked();
 			}
 			CFigure^ figure;
 			if (figureShape == "CCircle") figure = gcnew CCircle(e->X, e->Y, mainColor);
 			else if (figureShape == "CSquare") figure = gcnew CSquare(e->X, e->Y, mainColor);
 			else if (figureShape == "CTriangle") figure = gcnew CTriangle(e->X, e->Y, mainColor);
-			if (figure->checkBorder(0, 0, paintBox->Width, paintBox->Height)) figures->Add(figure);
+			if (figure->checkBorder(0, 0, paintBox->Width, paintBox->Height)) figures->push_back(figure);
 			paintBox->Invalidate();
 		}
 	}
@@ -513,43 +514,50 @@ namespace Visualeditor {
 		if (checkBoxCtrl->Checked) {
 			if (e->KeyCode == Keys::ControlKey) ctrlPressed = true;
 		}
-		List<CFigure^>^ selectedFigures = gcnew List<CFigure^>;
-		for each (CFigure ^ figure in figures) {
-			if (figure->check_selected()) selectedFigures->Add(figure);
+		CContainer<CFigure^>^ selectedFigures = gcnew CContainer<CFigure^>;
+		for (int i = 0; i < figures->get_size(); i++) {
+			CFigure^ figure = figures->get_object(i);
+			if (figure->check_selected()) selectedFigures->push_back(figure);
 		}
 		if (e->KeyCode == Keys::Delete) {
-			for each (CFigure ^ figure in selectedFigures) {
-				figures->Remove(figure);
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				figures->remove(selectedFigures->get_object(i));
 			}
 		}
 		if (e->KeyCode == Keys::A) {
-			for each (CFigure ^ figure in selectedFigures) {
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				CFigure^ figure = selectedFigures->get_object(i);
 				if (figure->checkBorder(-5, 0, paintBox->Width, paintBox->Height)) figure->move(-5, 0);
 			}
 		}
 		if (e->KeyCode == Keys::D) {
-			for each (CFigure ^ figure in selectedFigures) {
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				CFigure^ figure = selectedFigures->get_object(i);
 				if (figure->checkBorder(5, 0, paintBox->Width, paintBox->Height)) figure->move(5, 0);
 			}
 		}
 		if (e->KeyCode == Keys::W) {
-			for each (CFigure ^ figure in selectedFigures) {
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				CFigure^ figure = selectedFigures->get_object(i);
 				if (figure->checkBorder(0, -5, paintBox->Width, paintBox->Height)) figure->move(0, -5);
 			}
 		}
 		if (e->KeyCode == Keys::S) {
-			for each (CFigure ^ figure in selectedFigures) {
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				CFigure^ figure = selectedFigures->get_object(i);
 				if (figure->checkBorder(0, 5, paintBox->Width, paintBox->Height)) figure->move(0, 5);
 			}
 		}
 		if (e->KeyCode == Keys::Oemplus) {
-			for each (CFigure ^ figure in selectedFigures) {
-				if (figure->checkBorder(2, 2, paintBox->Width, paintBox->Height)) figure->changeSize(2);
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				CFigure^ figure = selectedFigures->get_object(i);
+				if (figure->checkBorder(2, 2, paintBox->Width, paintBox->Height) &&
+					figure->checkBorder(-2, -2, paintBox->Width, paintBox->Height)) figure->changeSize(2);
 			}
 		}
 		if (e->KeyCode == Keys::OemMinus) {
-			for each (CFigure ^ figure in selectedFigures) {
-				figure->changeSize(-2);
+			for (int i = 0; i < selectedFigures->get_size(); i++) {
+				selectedFigures->get_object(i)->changeSize(-2);
 			}
 		}
 	}
@@ -559,7 +567,8 @@ namespace Visualeditor {
 	private: void one_selected() {
 		CFigure^ object;
 		int countOfSelected = 0;
-		for each (CFigure ^ figure in figures) {
+		for (int i = 0; i < figures->get_size(); i++) {
+			CFigure^ figure = figures->get_object(i);
 			if (!figure->check_selected()) object = figure;
 			else countOfSelected++;
 		}
@@ -595,17 +604,19 @@ namespace Visualeditor {
 		else pictureBoxMainColor->Visible = true;
 	}
 	private: System::Void buttonFill_Click(System::Object^ sender, System::EventArgs^ e) {
-		for each (CFigure ^ figure in figures) {
+		for (int i = 0; i < figures->get_size(); i++) {
+			CFigure^ figure = figures->get_object(i);
 			if (figure->check_selected()) figure->changeColor(mainColor);
 		}
 	}
 	private: System::Void paintBox_Resize(System::Object^ sender, System::EventArgs^ e) {
-		List<CFigure^>^ remove_list = gcnew List<CFigure^>;
-		for each (CFigure ^ figure in figures) {
-			if (!figure->checkBorder(0, 0, paintBox->Width, paintBox->Height)) remove_list->Add(figure);
+		CContainer<CFigure^>^ removeList = gcnew CContainer<CFigure^>;
+		for (int i = 0; i < figures->get_size(); i++) {
+			CFigure^ figure = figures->get_object(i);
+			if (!figure->checkBorder(0, 0, paintBox->Width, paintBox->Height)) removeList->push_back(figure);
 		}
-		for each (CFigure ^ figure in remove_list) {
-			figures->Remove(figure);
+		for (int i = 0; i < removeList->get_size(); i++) {
+			figures->remove(removeList->get_object(i));
 		}
 	}
 };
