@@ -597,10 +597,11 @@ namespace Visualeditor {
 		}
 	}
 	private: System::Void VE_Form_Resize(System::Object^ sender, System::EventArgs^ e) {
-		if (Width < 872) buttonFill->Visible = false;
+		int parametr = Width - panelColor->Location.X;
+		if (Width < buttonFill->Location.X + buttonFill->Width + parametr) buttonFill->Visible = false;
 		else buttonFill->Visible = true;
 
-		if (Width < 781) pictureBoxMainColor->Visible = false;
+		if (Width < pictureBoxMainColor->Location.X + pictureBoxMainColor->Width + parametr) pictureBoxMainColor->Visible = false;
 		else pictureBoxMainColor->Visible = true;
 	}
 	private: System::Void buttonFill_Click(System::Object^ sender, System::EventArgs^ e) {
