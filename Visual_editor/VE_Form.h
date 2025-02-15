@@ -153,7 +153,7 @@ namespace Visualeditor {
 			this->paintBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->paintBox->Location = System::Drawing::Point(12, 82);
 			this->paintBox->Name = L"paintBox";
-			this->paintBox->Size = System::Drawing::Size(942, 561);
+			this->paintBox->Size = System::Drawing::Size(940, 557);
 			this->paintBox->TabIndex = 0;
 			this->paintBox->TabStop = false;
 			this->paintBox->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &VE_Form::paintBox_Paint);
@@ -250,7 +250,7 @@ namespace Visualeditor {
 			this->panelColor->Controls->Add(this->pictureBoxRed);
 			this->panelColor->Controls->Add(this->pictureBoxBlack);
 			this->panelColor->Controls->Add(this->pictureBoxGray);
-			this->panelColor->Location = System::Drawing::Point(756, 12);
+			this->panelColor->Location = System::Drawing::Point(754, 12);
 			this->panelColor->Name = L"panelColor";
 			this->panelColor->Size = System::Drawing::Size(198, 64);
 			this->panelColor->TabIndex = 4;
@@ -416,7 +416,7 @@ namespace Visualeditor {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::GhostWhite;
-			this->ClientSize = System::Drawing::Size(966, 655);
+			this->ClientSize = System::Drawing::Size(964, 651);
 			this->Controls->Add(this->panelColor);
 			this->Controls->Add(this->panelFigure);
 			this->Controls->Add(this->checkBoxIntersaction);
